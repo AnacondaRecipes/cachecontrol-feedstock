@@ -46,6 +46,6 @@ about:
   description: |
     CacheControl is a port of the caching algortihms in httplib2
     for use with requests session object.
-  doc_url: http://cachecontrol.readthedocs.org
+  doc_url: https://cachecontrol.readthedocs.io
   doc_source_url: https://github.com/ionrock/cachecontrol/blob/master/docs/index.rst
   dev_url: https://github.com/ionrock/cachecontrol
