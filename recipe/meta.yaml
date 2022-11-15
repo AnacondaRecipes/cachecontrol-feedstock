@@ -25,7 +25,7 @@ requirements:
   run:
     - python
     - requests
-    - msgpack-python
+    - msgpack-python >=0.5.2
 
 test:
   requires:
