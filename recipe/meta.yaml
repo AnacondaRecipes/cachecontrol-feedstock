@@ -42,6 +42,7 @@ about:
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE.txt
+  license_url: https://github.com/ionrock/cachecontrol/blob/master/LICENSE.txt
   summary: httplib2 caching algorithms for use with requests
   description: |
     CacheControl is a port of the caching algortihms in httplib2
