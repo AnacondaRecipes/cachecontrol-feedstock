@@ -1,6 +1,6 @@
 {% set name = "CacheControl" %}
-{% set version = "0.12.6" %}
-{% set sha256 = "be9aa45477a134aee56c8fac518627e1154df063e85f67d4f83ce0ccc23688e8" %}
+{% set version = "0.12.11" %}
+{% set sha256 = "a5b9fcc986b184db101aa280b42ecdcdfc524892596f606858e0b7a8b4d9e144" %}
 
 package:
   name: {{ name.lower() }}
@@ -12,7 +12,7 @@ source:
 
 build:
   number: 0
-  noarch: python
+  skip: true  # [py<36]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
       - doesitcache = cachecontrol._cmd:main
@@ -22,10 +22,11 @@ requirements:
     - python
     - pip
     - setuptools
+    - wheel
   run:
     - python
     - requests
-    - msgpack-python
+    - msgpack-python >=0.5.2
 
 test:
   requires:
@@ -41,10 +42,11 @@ about:
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE.txt
+  license_url: https://github.com/ionrock/cachecontrol/blob/master/LICENSE.txt
   summary: httplib2 caching algorithms for use with requests
   description: |
     CacheControl is a port of the caching algortihms in httplib2
     for use with requests session object.
-  doc_url: http://cachecontrol.readthedocs.org
+  doc_url: https://cachecontrol.readthedocs.io
   doc_source_url: https://github.com/ionrock/cachecontrol/blob/master/docs/index.rst
   dev_url: https://github.com/ionrock/cachecontrol
