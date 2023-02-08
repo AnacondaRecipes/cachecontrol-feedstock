@@ -11,7 +11,7 @@ source:
 
 build:
   number: 1
-  noarch: python
+  skip: true  # [py<36]
 
 requirements:
   host:
@@ -20,12 +20,12 @@ requirements:
     - setuptools
     - wheel
   run:
-    - python >=3.6
+    - python
 
 outputs:
   - name: cachecontrol
     build:
-      noarch: python
+      skip: true  # [py<36]
       script: {{ PYTHON }} -m pip install . -vv --no-deps
       entry_points:
         - doesitcache = cachecontrol._cmd:main
@@ -36,7 +36,7 @@ outputs:
         - setuptools
         - wheel
       run:
-        - python >=3.6
+        - python
         - requests
         - msgpack-python >=0.5.2
     test: &test
@@ -50,7 +50,7 @@ outputs:
 
   - name: cachecontrol-with-redis
     build:
-      noarch: python
+      skip: true  # [py<36]
     requirements:
       host:
         - python
@@ -59,7 +59,7 @@ outputs:
         - wheel
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
-        - python >=3.6
+        - python 
         - redis-py >=2.10.5
     test: *test
 
@@ -88,7 +88,7 @@ about:
     CacheControl is a port of the caching algorithms in httplib2 for use with
     requests session object.
     It was written because httplib2's better support for caching is often
-    mitigated by its lack of threadsafety. The same is true of requests
+    mitigated by its lack of thread safety. The same is true of requests
     in terms of caching.
   doc_url: https://cachecontrol.readthedocs.io
   dev_url: https://github.com/ionrock/cachecontrol
