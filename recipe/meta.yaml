@@ -1,21 +1,17 @@
-{% set name = "CacheControl" %}
 {% set version = "0.12.11" %}
 {% set sha256 = "a5b9fcc986b184db101aa280b42ecdcdfc524892596f606858e0b7a8b4d9e144" %}
 
 package:
-  name: {{ name.lower() }}
+  name: cachecontrol-split
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/C/CacheControl/CacheControl-{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  skip: true  # [py<36]
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
-  entry_points:
-      - doesitcache = cachecontrol._cmd:main
+  number: 1
+  noarch: python
 
 requirements:
   host:
@@ -24,29 +20,75 @@ requirements:
     - setuptools
     - wheel
   run:
-    - python
-    - requests
-    - msgpack-python >=0.5.2
+    - python >=3.6
 
-test:
-  requires:
-    - pip
-  imports:
-    - cachecontrol
-  commands:
-    - pip check
-    - doesitcache --help
+outputs:
+  - name: cachecontrol
+    build:
+      noarch: python
+      script: {{ PYTHON }} -m pip install . -vv --no-deps
+      entry_points:
+        - doesitcache = cachecontrol._cmd:main
+    requirements:
+      host:
+        - python
+        - pip
+        - setuptools
+        - wheel
+      run:
+        - python >=3.6
+        - requests
+        - msgpack-python >=0.5.2
+    test: &test
+      requires:
+        - pip
+      imports:
+        - cachecontrol
+      commands:
+        - pip check
+        - doesitcache --help
+
+  - name: cachecontrol-with-redis
+    build:
+      noarch: python
+    requirements:
+      host:
+        - python
+        - pip
+        - setuptools
+        - wheel
+      run:
+        - {{ pin_subpackage("cachecontrol", exact=True) }}
+        - python >=3.6
+        - redis-py >=2.10.5
+    test: *test
+
+  - name: cachecontrol-with-filecache
+    build:
+      noarch: python
+    requirements:
+      host:
+        - python
+        - pip
+        - setuptools
+        - wheel
+      run:
+        - {{ pin_subpackage("cachecontrol", exact=True) }}
+        - python >=3.6
+        - lockfile >=0.9
+    test: *test
 
 about:
   home: https://github.com/ionrock/cachecontrol
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE.txt
-  license_url: https://github.com/ionrock/cachecontrol/blob/master/LICENSE.txt
-  summary: httplib2 caching algorithms for use with requests
+  summary: The httplib2 caching algorithms packaged up for use with requests
   description: |
-    CacheControl is a port of the caching algortihms in httplib2
-    for use with requests session object.
+    CacheControl is a port of the caching algorithms in httplib2 for use with
+    requests session object.
+    It was written because httplib2's better support for caching is often
+    mitigated by its lack of threadsafety. The same is true of requests
+    in terms of caching.
   doc_url: https://cachecontrol.readthedocs.io
-  doc_source_url: https://github.com/ionrock/cachecontrol/blob/master/docs/index.rst
   dev_url: https://github.com/ionrock/cachecontrol
