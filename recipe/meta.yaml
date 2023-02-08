@@ -74,7 +74,7 @@ outputs:
         - wheel
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
-        - python >=3.6
+        - python
         - lockfile >=0.9
     test: *test
 
