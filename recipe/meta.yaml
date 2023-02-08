@@ -65,7 +65,7 @@ outputs:
 
   - name: cachecontrol-with-filecache
     build:
-      noarch: python
+      skip: true  # [py<36]
     requirements:
       host:
         - python
