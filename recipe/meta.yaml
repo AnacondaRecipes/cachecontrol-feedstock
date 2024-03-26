@@ -25,8 +25,8 @@ requirements:
 outputs:
   - name: cachecontrol
     build:
-      skip: true  # [py<36]
-      script: {{ PYTHON }} -m pip install . -vv --no-deps
+      skip: true  # [py<37]
+      script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
       entry_points:
         - doesitcache = cachecontrol._cmd:main
     requirements:
@@ -59,7 +59,7 @@ outputs:
         - wheel
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
-        - python 
+        - python
         - redis-py >=2.10.5
     test: *test
 
