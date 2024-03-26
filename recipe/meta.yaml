@@ -37,8 +37,8 @@ outputs:
         - wheel
       run:
         - python
-        - requests
-        - msgpack-python >=0.5.2
+        - requests >=2.16.0
+        - msgpack-python >=0.5.2, <2.0.0
     test: &test
       requires:
         - pip
@@ -75,7 +75,7 @@ outputs:
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
-        - lockfile >=0.9
+        - filelock >=3.8.0
     test: *test
 
 about:
