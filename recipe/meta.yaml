@@ -26,7 +26,7 @@ outputs:
   - name: cachecontrol
     build:
       skip: true  # [py<37]
-      script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+      script: {{ PYTHON }} -m pip install . -vv --no-deps
       entry_points:
         - doesitcache = cachecontrol._cmd:main
     requirements:
