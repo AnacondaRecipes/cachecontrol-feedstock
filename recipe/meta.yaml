@@ -25,15 +25,14 @@ outputs:
   - name: cachecontrol
     build:
       skip: true  # [py<37]
-      script: {{ PYTHON }} -m pip install . -vv --no-deps
+      script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
       entry_points:
         - doesitcache = cachecontrol._cmd:main
     requirements:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - python
         - requests >=2.16.0
@@ -54,8 +53,7 @@ outputs:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
@@ -69,8 +67,7 @@ outputs:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
