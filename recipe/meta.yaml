@@ -1,44 +1,42 @@
-{% set version = "0.12.11" %}
-{% set sha256 = "a5b9fcc986b184db101aa280b42ecdcdfc524892596f606858e0b7a8b4d9e144" %}
+{% set version = "0.14.0" %}
+{% set sha256 = "7db1195b41c81f8274a7bbd97c956f44e8348265a1bc7641c37dfebc39f0c938" %}
 
 package:
   name: cachecontrol-split
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/C/CacheControl/CacheControl-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/C/CacheControl/cachecontrol-{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
 build:
-  number: 1
-  skip: true  # [py<36]
+  number: 0
+  skip: true  # [py<37]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - flit-core >=3.2,<4
   run:
     - python
 
 outputs:
   - name: cachecontrol
     build:
-      skip: true  # [py<36]
-      script: {{ PYTHON }} -m pip install . -vv --no-deps
+      skip: true  # [py<37]
+      script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
       entry_points:
         - doesitcache = cachecontrol._cmd:main
     requirements:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - python
-        - requests
-        - msgpack-python >=0.5.2
+        - requests >=2.16.0
+        - msgpack-python >=0.5.2, <2.0.0
     test: &test
       requires:
         - pip
@@ -50,32 +48,30 @@ outputs:
 
   - name: cachecontrol-with-redis
     build:
-      skip: true  # [py<36]
+      skip: true  # [py<37]
     requirements:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
-        - python 
+        - python
         - redis-py >=2.10.5
     test: *test
 
   - name: cachecontrol-with-filecache
     build:
-      skip: true  # [py<36]
+      skip: true  # [py<37]
     requirements:
       host:
         - python
         - pip
-        - setuptools
-        - wheel
+        - flit-core
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
-        - lockfile >=0.9
+        - filelock >=3.8.0
     test: *test
 
 about:
