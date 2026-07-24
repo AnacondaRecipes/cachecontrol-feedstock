@@ -1,5 +1,5 @@
 {% set name = "CacheControl" %}
-{% set version = "0.14.3" %}
+{% set version = "0.14.4" %}
 
 package:
   name: {{ name|lower }}-split
@@ -7,24 +7,24 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|lower }}-{{ version }}.tar.gz
-  sha256: 73e7efec4b06b20d9267b441c1f733664f989fb8688391b670ca812d70795d11
+  sha256: e6220afafa4c22a47dd0badb319f84475d79108100d04e26e8542ef7d3ab05a1
 
 build:
   number: 0
-  skip: true  # [py<37]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - pip
     - python
-    - flit-core >=3.2,<4
+    - uv-build >=0.9.6,<0.10.0
   run:
     - python
 
 outputs:
-  - name: cachecontrol
+  - name: {{ name|lower }}
     build:
-      skip: true  # [py<37]
+      skip: true  # [py<310]
       script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
       entry_points:
         - doesitcache = cachecontrol._cmd:main
@@ -32,11 +32,16 @@ outputs:
       host:
         - pip
         - python
-        - flit-core
+        - uv-build >=0.9.6,<0.10.0
       run:
         - python
         - requests >=2.16.0
-        - msgpack-python >=0.5.2, <2.0.0
+        - msgpack-python >=0.5.2,<2.0.0
+      run_constrained:
+        # filecache
+        - filelock >=3.8.0
+        # redis
+        - redis >=2.10.5
     test: &test
       requires:
         - pip
@@ -48,12 +53,12 @@ outputs:
 
   - name: cachecontrol-with-redis
     build:
-      skip: true  # [py<37]
+      skip: true  # [py<310]
     requirements:
       host:
         - pip
         - python
-        - flit-core
+        - uv-build >=0.9.6,<0.10.0
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
@@ -62,12 +67,12 @@ outputs:
 
   - name: cachecontrol-with-filecache
     build:
-      skip: true  # [py<37]
+      skip: true  # [py<310]
     requirements:
       host:
         - python
         - pip
-        - flit-core
+        - uv-build >=0.9.6,<0.10.0
       run:
         - {{ pin_subpackage("cachecontrol", exact=True) }}
         - python
